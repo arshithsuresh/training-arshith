@@ -1,5 +1,4 @@
-.sidebar-content{
-    background-color: wheat;
+.sidebar-content{    
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -9,5 +8,20 @@
         font-size: 1.8em;
         font-weight: 500;
         letter-spacing: 1px;
+        margin-top: 12px;
+    }
+
+    .collection{
+        .title{
+
+        }
+
+        .palette-items{
+            display: flex;
+            flex-direction: column;
+            row-gap: 2px;
+            column-gap: 2px;
+            align-items: center ;
+        }
     }
 }

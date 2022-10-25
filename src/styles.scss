@@ -59,3 +59,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 {
   padding:12px
 }
+.tbg{
+  background-color: wheat;
+}
+
+.f-col{
+  flex-direction: column;
+}
+
+.f-row{
+  flex-direction: row;
+}
+
+input{
+  height: 28px;
+  border-radius: 4px;
+  border : 1px solid;
+  padding: 0px 4px;
+}
