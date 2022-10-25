@@ -1,0 +1,12 @@
+.header{
+    
+    .header-bar{
+        height: var(--header-height);
+        background-color: var(--primary);
+        .soti-logo{
+           img{
+                height: 24px;
+            }
+        }
+    }
+}
