@@ -12,19 +12,15 @@
             position: absolute;
             bottom: 12px;
             left: 50%;
-            transform: translateX(-50%);
-
-           
-        }              
+            transform: translateX(-50%);           
+        }   
+        
+        canvas{            
+            width: 100%;
+            height: 100%;
+        }
     }
-    .event-inspector{
-        height: 64px;     
-        margin: 4px;   
-        border: 1px solid rgba($color: #000000, $alpha: 0.1);
-        border-radius: 8px;
-        background-color: white;
-        z-index: 10;
-    }
+    
 }
 
 

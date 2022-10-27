@@ -16,6 +16,7 @@ import { SideBarPalleteComponent } from './side-bar-pallete/side-bar-pallete.com
 import { CanvasComponent } from './canvas/canvas.component';
 import { CanvasToolbarComponent } from './canvas-toolbar/canvas-toolbar.component';
 import { PropertiesComponent } from './properties/properties.component';
+import { EventInspectorComponent } from './event-inspector/event-inspector.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { PropertiesComponent } from './properties/properties.component';
     SideBarPalleteComponent,
     CanvasComponent,
     CanvasToolbarComponent,
-    PropertiesComponent,    
+    PropertiesComponent,
+    EventInspectorComponent,    
     
   ],
   imports: [

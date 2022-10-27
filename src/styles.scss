@@ -71,9 +71,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   flex-direction: row;
 }
 
-input{
+input[type=number]{
   height: 28px;
   border-radius: 4px;
   border : 1px solid;
   padding: 0px 4px;
+}
+input[type=color]{
+  height: 28px;
+  padding: 0px;
+  width: 28px;
 }
