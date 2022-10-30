@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild,ElementRef, AfterViewInit } from '@angular/core';
+import { CanvasCoreService } from '../core/canvas/canvas-core.service';
 
 @Component({
   selector: 'app-canvas',
@@ -7,25 +8,24 @@ import { Component, OnInit, ViewChild,ElementRef, AfterViewInit } from '@angular
 })
 export class CanvasComponent implements OnInit,AfterViewInit {
 
-  @ViewChild("canvas") mcanvas?: ElementRef<HTMLCanvasElement>;
-  context?: CanvasRenderingContext2D | null;
-  constructor() { }
+  @ViewChild("canvas") _mCanvas?: ElementRef<HTMLCanvasElement>;  
+  constructor(private canvasService:CanvasCoreService) { }
 
   ngAfterViewInit(): void {
-    if(this.mcanvas!=null)
+    if(this._mCanvas!=null)
     {
-      this.context = this.mcanvas.nativeElement.getContext('2d');      
+      let canvas = this._mCanvas.nativeElement;          
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      this.canvasService.canvasLoaded.emit(this._mCanvas.nativeElement);
     }
     else
     {
-      console.log("Canvas Null!")
+      console.log("Canvas Null!");      
     }
   }
 
   ngOnInit(): void {
     
   }
-
-
-
 }

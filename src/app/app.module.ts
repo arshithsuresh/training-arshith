@@ -17,6 +17,9 @@ import { CanvasComponent } from './canvas/canvas.component';
 import { CanvasToolbarComponent } from './canvas-toolbar/canvas-toolbar.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { EventInspectorComponent } from './event-inspector/event-inspector.component';
+import { CreateRectComponent } from './side-bar-pallete/collections/create-rect/create-rect.component';
+import { CreateCircleComponent } from './side-bar-pallete/collections/create-circle/create-circle.component';
+import { CreateTriangleComponent } from './side-bar-pallete/collections/create-triangle/create-triangle.component';
 
 
 @NgModule({
@@ -29,7 +32,9 @@ import { EventInspectorComponent } from './event-inspector/event-inspector.compo
     CanvasComponent,
     CanvasToolbarComponent,
     PropertiesComponent,
-    EventInspectorComponent,    
+    EventInspectorComponent,
+    CreateRectComponent,    
+    CreateCircleComponent, CreateTriangleComponent     
     
   ],
   imports: [
