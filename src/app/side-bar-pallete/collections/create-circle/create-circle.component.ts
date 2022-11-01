@@ -9,18 +9,19 @@ import { CreateShape } from '../create-shape';
   templateUrl: './create-circle.component.html',
   styleUrls: ['./create-circle.component.scss']
 })
-export class CreateCircleComponent  implements OnInit,CreateShape {
+export class CreateCircleComponent extends CreateShape  implements OnInit {
 
   myShape: Circle;
   constructor(private canvasService:CanvasCoreService) {
+    super();
     this.myShape= new Circle("Circle",10,10);
   }
 
   ngOnInit(): void {
   }
 
-  createShape(): void {
-    this.canvasService.drawObject(new Circle("Circle",10,10))
+  create():void{
+    this.createShape.emit(new Circle("Circle",10,10));
   }
 
 }

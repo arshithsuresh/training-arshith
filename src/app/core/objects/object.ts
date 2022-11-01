@@ -1,11 +1,10 @@
 
 import { fabric } from "fabric";
-import { Vector2 } from "../properties/location";
 
 export interface IDrawableObject{
     object:fabric.Object;
     name:string;      
-    origin:Vector2;   
+    origin:fabric.Point;   
 }
 
 export interface IFreeScalable{
@@ -19,5 +18,5 @@ export interface ILockedScalable{
     width:number;    
 }
 export interface ITwoPointObject{
-    end:Vector2;
+    end:fabric.Point;
 }

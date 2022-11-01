@@ -8,14 +8,16 @@ import { CreateShape } from '../create-shape';
   templateUrl: './create-triangle.component.html',
   styleUrls: ['./create-triangle.component.scss']
 })
-export class CreateTriangleComponent implements OnInit,CreateShape {
+export class CreateTriangleComponent extends CreateShape implements OnInit {
 
-  constructor(private canvasService:CanvasCoreService) { }
+  constructor() {
+    super();
+  }
 
   ngOnInit(): void {
   }
 
-  createShape(): void {    
-    this.canvasService.drawObject(new Triangle("Tringle",10,10));
-  }
+  create():void{
+    this.createShape.emit(new Triangle("Tringle",10,10));
+  }  
 }

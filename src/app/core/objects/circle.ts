@@ -1,5 +1,4 @@
 import { fabric } from "fabric";
-import { Vector2 } from "../properties/location";
 import { IDrawableObject, IFreeScalable, ILockedScalable, ITwoPointObject } from "./object";
 
 export class Circle implements IDrawableObject, ILockedScalable
@@ -9,7 +8,7 @@ export class Circle implements IDrawableObject, ILockedScalable
         public name:string,        
         public width:number,
         public radius:number,        
-        public origin:Vector2= Vector2.zero,        
+        public origin:fabric.Point= new fabric.Point(0,0),        
         )
     {
         this.object = new fabric.Circle(

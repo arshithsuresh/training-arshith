@@ -9,18 +9,17 @@ import { CreateShape } from '../create-shape';
   templateUrl: './create-rect.component.html',
   styleUrls: ['./create-rect.component.scss']
 })
-export class CreateRectComponent  implements OnInit,CreateShape {
-  
-  myShape: Rectangle;
+export class CreateRectComponent extends CreateShape implements OnInit {
+    
   constructor(protected canvasService: CanvasCoreService) {
-    this.myShape= new Rectangle("Rect",10,10,10); 
+    super();    
   }
 
   ngOnInit(): void {    
   }
 
-  createShape(): void {    
-    this.canvasService.drawObject(new Rectangle("Rect",10,10,10));
+  create():void{
+    this.createShape.emit(new Rectangle("Rect",10,10,10));
   }
 
 }

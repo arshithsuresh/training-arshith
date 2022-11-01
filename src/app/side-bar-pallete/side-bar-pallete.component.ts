@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CanvasCoreService } from '../core/canvas/canvas-core.service';
+import { IDrawableObject } from '../core/objects/object';
 
 @Component({
   selector: 'app-side-bar-pallete',
@@ -12,6 +13,10 @@ export class SideBarPalleteComponent implements OnInit {
 
   ngOnInit(): void {
     
+  }
+  
+  drawToCanvas(object:IDrawableObject){
+    this.canvasService.shapeCreated.emit(object);
   }
 
 }

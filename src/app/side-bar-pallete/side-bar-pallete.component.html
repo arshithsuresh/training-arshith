@@ -8,13 +8,13 @@
         </div>
         <div class="palette-items">
             <div class="item">
-                 <app-create-rect></app-create-rect>           
+                 <app-create-rect (onCreate)="drawToCanvas($event)"></app-create-rect>           
             </div>
             <div class="item">
-                <app-create-circle></app-create-circle>
+                <app-create-circle (onCreate)="drawToCanvas($event)" ></app-create-circle>
             </div>
             <div class="item">
-                <app-create-triangle></app-create-triangle>
+                <app-create-triangle (onCreate)="drawToCanvas($event)"></app-create-triangle>
             </div>
         </div>
     </div>

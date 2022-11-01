@@ -1,5 +1,4 @@
 import { fabric } from "fabric";
-import { Vector2 } from "../properties/location";
 import { IDrawableObject, ITwoPointObject } from "./object";
 
 export class Line implements IDrawableObject, ITwoPointObject
@@ -8,7 +7,7 @@ export class Line implements IDrawableObject, ITwoPointObject
         public object:fabric.Object,
         public name:string,
         public length:number,        
-        public origin:Vector2,
-        public end:Vector2)
+        public origin:fabric.Point= new fabric.Point(0,0),
+        public end:fabric.Point= new fabric.Point(0,0))
     {}
 }

@@ -1,7 +1,12 @@
+import {Component, Output, EventEmitter } from "@angular/core";
 import { IDrawableObject } from "src/app/core/objects/object";
-
- export interface CreateShape {
+@Component({
+    selector: 'app-create-shape',
+    template: ``,
+    styles:[]
+  })
+ export abstract class CreateShape {
     
-    myShape? : IDrawableObject;    
-    createShape():void;
+    @Output('onCreate') createShape = new EventEmitter<IDrawableObject>();    
+    abstract create():void;
 }

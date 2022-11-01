@@ -1,5 +1,4 @@
 import { fabric } from "fabric";
-import { Vector2 } from "../properties/location";
 import { IDrawableObject, IFreeScalable, ITwoPointObject } from "./object";
 
 export class Rectangle implements IDrawableObject, IFreeScalable
@@ -10,7 +9,7 @@ export class Rectangle implements IDrawableObject, IFreeScalable
         public length:number,
         public width:number,
         public height:number,
-        public origin:Vector2= Vector2.zero,        
+        public origin:fabric.Point= new fabric.Point(0,0),        
         )
     {
         this.object = new fabric.Rect(
