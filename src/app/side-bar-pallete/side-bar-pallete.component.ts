@@ -10,13 +10,12 @@ import { IDrawableObject } from '../core/objects/object';
 export class SideBarPalleteComponent implements OnInit {
 
   constructor(private canvasService:CanvasCoreService) { }
-
   ngOnInit(): void {
     
   }
   
   drawToCanvas(object:IDrawableObject){
-    this.canvasService.shapeCreated.emit(object);
+    this.canvasService.createShape(object);
   }
 
 }

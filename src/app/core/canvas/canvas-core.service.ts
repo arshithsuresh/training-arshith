@@ -1,6 +1,7 @@
 import { Injectable, ViewChild,EventEmitter} from '@angular/core';
 import { fabric } from 'fabric';
 import { Canvas } from 'fabric/fabric-impl';
+import { Subject } from 'rxjs';
 import { IDrawableObject } from '../objects/object';
 import { Rectangle } from '../objects/rectangle';
 
@@ -14,9 +15,15 @@ export class CanvasCoreService {
   objects:Map<string,IDrawableObject>= new Map();  
   canvas!:Canvas;
   
-  shapeCreated : EventEmitter<IDrawableObject> = new EventEmitter();
+  shapeCreated : Subject<IDrawableObject> = new Subject();
 
-  constructor() {        
+  constructor() {
   }
+
+  createShape(shape:IDrawableObject)
+  {
+    this.shapeCreated.next(shape)
+  }
+
 
 }
