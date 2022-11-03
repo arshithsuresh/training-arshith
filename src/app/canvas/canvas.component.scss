@@ -5,8 +5,8 @@
     height: calc(100vh - var(--header-height));
     .draw-canvas{
         display: flex;
-        height: 100%;
-        width: 100%; 
+        width: 100%;
+        height: 100%;        
         position: relative;
         .canvas-toolbar{
             position: absolute;
@@ -15,9 +15,17 @@
             transform: translateX(-50%);           
         }   
         
-        canvas{            
+        .canvas-container{                
             width: 100%;
             height: 100%;
+            background-color: wheat;
+            overflow: hidden;
+            canvas{
+                margin: 0;
+                padding: 0;
+                width: calc(100% - 1px);
+                height: calc(100% - 1px);
+            }
         }
     }
     

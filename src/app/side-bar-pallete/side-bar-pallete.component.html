@@ -8,13 +8,13 @@
         </div>
         <div class="palette-items">
             <div class="item">
-                <button mat-flat-button color="primary" >Rect</button>                
+                 <app-create-rect (onCreate)="drawToCanvas($event)"></app-create-rect>           
             </div>
             <div class="item">
-                <button mat-flat-button color="primary" >Triangle</button>
+                <app-create-circle (onCreate)="drawToCanvas($event)" ></app-create-circle>
             </div>
             <div class="item">
-                <button mat-flat-button color="primary" >Circle</button>
+                <app-create-triangle (onCreate)="drawToCanvas($event)"></app-create-triangle>
             </div>
         </div>
     </div>
