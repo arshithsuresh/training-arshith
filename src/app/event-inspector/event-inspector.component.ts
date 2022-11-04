@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EventInspectorLogger } from '../core/logging/eventInspectorLogger';
 
 @Component({
   selector: 'app-event-inspector',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventInspectorComponent implements OnInit {
 
-  constructor() { }
+  eventLogs:string[]=[]
+
+  constructor(private eventInspectorService:EventInspectorLogger) { }
 
   ngOnInit(): void {
+    this.eventInspectorService.eventFired$.subscribe((eventData)=>{
+      this.addToEventLog(eventData);
+    })
+  }
+
+  addToEventLog(log:string){
+    this.eventLogs.push(log);
   }
 
 }

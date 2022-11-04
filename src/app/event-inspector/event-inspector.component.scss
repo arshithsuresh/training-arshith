@@ -5,4 +5,25 @@
     border-radius: 8px;
     background-color: white;
     z-index: 10;
+    position: relative;
+
+    h5{
+        background-color: white;
+        position: absolute;
+        width: fit-content;
+        top: -12px;
+        padding: 0px 12px;
+    }
+
+    .eventLog{
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;        
+        height: 42px;
+        .logItem{
+            p{
+                margin: 0px;
+            }
+        }
+    }
 }

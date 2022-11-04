@@ -3,6 +3,7 @@ import { CanvasCoreService } from '../core/canvas/canvas-core.service';
 import {fabric} from 'fabric';
 import { IDrawableObject } from '../core/objects/object';
 import { Subscription } from 'rxjs';
+import { EventHandlerService } from '../core/logging/event-handle.service';
 
 @Component({
   selector: 'app-canvas',
@@ -14,9 +15,10 @@ export class CanvasComponent implements OnInit,AfterViewInit, OnDestroy {
   @ViewChild("canvas") _mCanvas?: ElementRef<HTMLCanvasElement>;
   
   canvas!: fabric.Canvas;
-
   private shapeCreatedSubscription!:Subscription;
-  constructor(private canvasService:CanvasCoreService) {
+
+  constructor(private canvasService:CanvasCoreService,
+    private eventHandlerService:EventHandlerService) {
 
     this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object)=>{
       this.drawObject(object);
@@ -28,8 +30,11 @@ export class CanvasComponent implements OnInit,AfterViewInit, OnDestroy {
     if(this._mCanvas!=null)
     {
       this._mCanvas.nativeElement.width  = this._mCanvas.nativeElement.offsetWidth;
-      this._mCanvas.nativeElement.height = this._mCanvas.nativeElement.offsetHeight; 
-      this.canvas = new fabric.Canvas('canvas');     
+      this._mCanvas.nativeElement.height = this._mCanvas.nativeElement.offsetHeight;
+       
+      this.canvas = new fabric.Canvas('canvas');
+      this.eventHandlerService.initEventHandlers(this.canvas);    
+      
     }
     else
     {

@@ -1,3 +1,8 @@
 <div class="event-inspector pd-12">
-    Event Inspector
+    <h5> Event Inspector</h5>
+    <div class="eventLog">
+        <div *ngFor="let log of eventLogs" class="logItem">
+            <p>{{log}}</p>
+        </div>        
+    </div>
 </div>
