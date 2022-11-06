@@ -18,12 +18,16 @@
     .eventLog{
         display: flex;
         flex-direction: column;
-        overflow-y: auto;        
+        overflow-y: scroll;        
         height: 42px;
+        
         .logItem{
             p{
                 margin: 0px;
-            }
+            }            
         }
+        .spacer{        
+            margin-bottom: 20px;            
+        }        
     }
 }

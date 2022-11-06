@@ -1,18 +1,19 @@
 import { ICanvasEvent } from './canvasEvent';
 
-export class ObjectCreatedEvent extends ICanvasEvent {
+export class ObjectScaledEvent extends ICanvasEvent {
     
-    eventName: string = 'object:added';
-    eventMessage: string = 'Object Created';
+    eventName: string = 'object:scaled';
+    eventMessage: string = 'Object Scaled';
 
     constructor() {
         super();
-    }    
+    }
 
     getEventMessage(eventData: fabric.IEvent): string {
         if (eventData.target != undefined && eventData.target.type != undefined) {
-            this.eventMessage = `[ Object Created ] : ${eventData.target.type} added to canvas!`;
+            this.eventMessage = `[ Object Scaled ] : ${eventData.target.type} scaled`;
         }
+        
         return this.eventMessage;
     }
 }
