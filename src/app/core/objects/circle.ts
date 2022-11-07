@@ -18,7 +18,9 @@ export class Circle implements IDrawableObject, ILockedScalable
                 left:origin.x, top:origin.y,
                 originX:"left", originY:"top",
                 fill:"transparent", stroke:"solid",
-                strokeWidth:1, hasControls:false,                
+                strokeWidth:1,
+                strokeUniform:true,
+                          
             }
         )
     }
