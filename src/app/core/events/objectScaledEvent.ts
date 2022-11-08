@@ -1,6 +1,6 @@
-import { ICanvasEvent } from './canvasEvent';
+import { ICanvasEventHandlers } from './canvasEvent';
 
-export class ObjectScaledEvent extends ICanvasEvent {
+export class ObjectScaledEvent extends ICanvasEventHandlers {
     
     eventName: string = 'object:scaled';
     eventMessage: string = 'Object Scaled';
@@ -9,7 +9,7 @@ export class ObjectScaledEvent extends ICanvasEvent {
         super();
     }
 
-    getEventMessage(eventData: fabric.IEvent): string {
+    constructEventMessage(eventData: fabric.IEvent): string {
         if (eventData.target != undefined && eventData.target.type != undefined) {
             this.eventMessage = `[ Object Scaled ] : ${eventData.target.type} scaled`;
         }

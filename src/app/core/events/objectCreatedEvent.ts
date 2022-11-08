@@ -1,6 +1,6 @@
-import { ICanvasEvent } from './canvasEvent';
+import { ICanvasEventHandlers } from './canvasEvent';
 
-export class ObjectCreatedEvent extends ICanvasEvent {
+export class ObjectCreatedEvent extends ICanvasEventHandlers {
     
     eventName: string = 'object:added';
     eventMessage: string = 'Object Created';
@@ -9,7 +9,7 @@ export class ObjectCreatedEvent extends ICanvasEvent {
         super();
     }    
 
-    getEventMessage(eventData: fabric.IEvent): string {
+    constructEventMessage(eventData: fabric.IEvent): string {
         if (eventData.target != undefined && eventData.target.type != undefined) {
             this.eventMessage = `[ Object Created ] : ${eventData.target.type} added to canvas!`;
         }

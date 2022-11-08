@@ -1,5 +1,5 @@
 import { Injectable} from '@angular/core';
-import { ICanvasEvent } from "../events/canvasEvent";
+import { ICanvasEventHandlers } from "../events/canvasEvent";
 import { Subject } from "rxjs";
 
 @Injectable({

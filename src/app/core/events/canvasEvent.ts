@@ -1,6 +1,18 @@
 import { fabric } from 'fabric';
+import { CANVAS_EVENT_TYPE } from './eventType';
 
-export abstract class ICanvasEvent {
+export abstract class CanvasEvent
+{    
+    
+    constructor(private eventType:CANVAS_EVENT_TYPE,
+        private message:string){}
+
+    getEventMessage(){
+        return this.message
+    }
+}
+
+export abstract class ICanvasEventHandlers {
     active: boolean = true;
     abstract eventName: string;
     abstract eventMessage: string;
@@ -19,5 +31,5 @@ export abstract class ICanvasEvent {
         console.log("EVENT :: " + this.eventName);
     }
 
-    abstract getEventMessage(eventData: fabric.IEvent): string;
+    abstract constructEventMessage(eventData: fabric.IEvent): string;
 }
