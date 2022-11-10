@@ -4,6 +4,12 @@ import { fabric } from 'fabric';
 import { IDrawableObject } from '../core/objects/object';
 import { Subscription } from 'rxjs';
 import { EventHandlerService } from '../core/logging/event-handle.service';
+import { Store } from '@ngrx/store';
+import { CanvasStoreModule } from '../state/canvas-store.module';
+import { AddedObject, ObjectUpdated } from '../state/canvas/canvas.actions';
+import { CanvasEvent, ICanvasEventHandlers } from '../core/events/canvasEvent';
+import { CANVAS_EVENT_TYPE, ObjectModifiedEvents, ObjectCreatedOrRemovedEvent } from '../core/events/eventType';
+import { Action } from '@ngrx/store';
 
 @Component({
     selector: 'app-canvas',
@@ -16,10 +22,16 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     canvas!: fabric.Canvas;
     private shapeCreatedSubscription!: Subscription;
 
-    constructor(private canvasService: CanvasCoreService, private eventHandlerService: EventHandlerService) {
+    constructor(private canvasService: CanvasCoreService, private eventHandlerService: EventHandlerService, private canvasStore: Store) {
         this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {
             this.drawObject(object);
         });
+
+        // this.canvasStore.dispatch(new AddedObject({
+        //     event: new CanvasEvent(CANVAS_EVENT_TYPE.OBJECT_MODIFIED," "),
+        //     object: new fabric.Rect(),
+        //     canvasState: JSON.stringify(this.canvas)
+        // }));
     }
 
     ngAfterViewInit(): void {
@@ -33,15 +45,44 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log('Canvas Null!');
         }
     }
+    dispatchAction(event:CanvasEvent, selectedObject:any){
+        
+        let _action: Action;
+        let _canvasState = JSON.stringify(this.canvas);
+        switch(event.getEventType())
+        {
+            case CANVAS_EVENT_TYPE.OBJECT_MODIFIED:
+                _action = new ObjectUpdated(
+                    {
+                        canvasState:_canvasState                   
+                    }
+                );
+            break;
 
+            default:
+                _action = new ObjectUpdated(
+                    {canvasState:_canvasState,
+                     //event: event,
+                     //object: selectedObject
+                    }
+                );
+        }
+
+        this.canvasStore.dispatch(_action);
+    }
     initEventHandlers(canvas: fabric.Canvas) {
         this.eventHandlerService.registedEvents.forEach((event) => {
             canvas.on(event.getEventName(), (e) => {
-                
                 if (event.active) {
-                    let eventMessage = event.constructEventMessage(e);
-                    this.eventHandlerService.handleLogEvent(eventMessage);
+                    let canvasEvent = event.constructEvent(e);
+                    let canvasAction = this.eventHandlerService.handleLogEvent(canvasEvent);
                     event.handleEvent();
+                    // this.canvasStore.dispatch(new AddedObject({
+                    //     event: canvasEvent,
+                    //     object: e.target!,
+                    //     canvasState: JSON.stringify(this.canvas)
+                    // }));
+                    this.dispatchAction(canvasEvent, e.target!);
                 }
             });
         });

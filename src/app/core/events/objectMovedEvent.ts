@@ -1,5 +1,6 @@
-import { ICanvasEventHandlers } from './canvasEvent';
-
+import { CanvasActions, ObjectUpdated } from 'src/app/state/canvas/canvas.actions';
+import { CanvasEvent, ICanvasEventHandlers } from './canvasEvent';
+import { CANVAS_EVENT_TYPE } from './eventType';
 export class ObjectMovedEvent extends ICanvasEventHandlers {
     
     eventName: string = 'object:moved';
@@ -16,5 +17,21 @@ export class ObjectMovedEvent extends ICanvasEventHandlers {
             } )`;
         }
         return this.eventMessage;
+    }
+
+    constructEvent(eventData: fabric.IEvent){
+        let event:CanvasEvent = new CanvasEvent(
+            CANVAS_EVENT_TYPE.OBJECT_MODIFIED,
+            this.constructEventMessage(eventData)
+        )
+        return event;
+    }
+
+    constructCanvasAction(eventData: fabric.IEvent, canvasState:string): CanvasActions {
+        return new ObjectUpdated({
+            // event: this.constructEvent(eventData),
+            // object: eventData.target!,
+            canvasState:canvasState
+        });
     }
 }

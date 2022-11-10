@@ -4,13 +4,16 @@ import { ICanvasActionPayload } from './payload';
 export enum CANVAS_ACTION_TYPE {
     AddObject = '[Canvas] Add Object',
     RemoveObject = '[Canvas] Remove Object',
-    ObjectRotated = '[Canvas] Rotated Object',
-    ObjectMoved = '[Canvas] Moved Object',
-    ObjectScaled = '[Canvas] Scaled Object',
+    ObjectUpdated = '[Canvas] Modified Object'
 }
 
 export class AddedObject implements Action {
     readonly type: string = CANVAS_ACTION_TYPE.AddObject;
+    constructor(public payload: ICanvasActionPayload) {}
+}
+
+export class ObjectUpdated implements Action {
+    readonly type: string = CANVAS_ACTION_TYPE.ObjectUpdated;
     constructor(public payload: ICanvasActionPayload) {}
 }
 
@@ -19,19 +22,4 @@ export class RemoveObject implements Action {
     constructor(public payload: ICanvasActionPayload) {}
 }
 
-export class ObjectRotated implements Action {
-    readonly type: string = CANVAS_ACTION_TYPE.ObjectRotated;
-    constructor(public payload: ICanvasActionPayload) {}
-}
-
-export class ObjectMoved implements Action {
-    readonly type: string = CANVAS_ACTION_TYPE.ObjectMoved;
-    constructor(public payload: ICanvasActionPayload) {}
-}
-
-export class ObjectScaled implements Action {
-    readonly type: string = CANVAS_ACTION_TYPE.ObjectScaled;
-    constructor(public payload: ICanvasActionPayload) {}
-}
-
-export type CanvasActions = AddedObject | RemoveObject | ObjectMoved | ObjectRotated | ObjectScaled;
+export type CanvasActions = AddedObject | RemoveObject | ObjectUpdated;
