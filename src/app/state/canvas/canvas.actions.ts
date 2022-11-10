@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import { IDrawableObject } from 'src/app/core/objects/object';
 import { ICanvasActionPayload } from './payload';
 
 export enum CANVAS_ACTION_TYPE {
@@ -10,15 +9,14 @@ export enum CANVAS_ACTION_TYPE {
     ObjectScaled = '[Canvas] Scaled Object',
 }
 
-export class AddObject implements Action {
+export class AddedObject implements Action {
     readonly type: string = CANVAS_ACTION_TYPE.AddObject;
     constructor(public payload: ICanvasActionPayload) {}
 }
 
 export class RemoveObject implements Action {
     readonly type: string = CANVAS_ACTION_TYPE.RemoveObject;
-    constructor(
-        public payload: ICanvasActionPayload) {}
+    constructor(public payload: ICanvasActionPayload) {}
 }
 
 export class ObjectRotated implements Action {
@@ -36,4 +34,4 @@ export class ObjectScaled implements Action {
     constructor(public payload: ICanvasActionPayload) {}
 }
 
-export type CanvasActions = AddObject | RemoveObject | ObjectMoved | ObjectRotated | ObjectScaled;
+export type CanvasActions = AddedObject | RemoveObject | ObjectMoved | ObjectRotated | ObjectScaled;

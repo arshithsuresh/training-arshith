@@ -21,7 +21,7 @@ export class EventInspectorComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        console.log('INit');
+        //console.log('INit');
     }    
 
     scrollViewToTop() {

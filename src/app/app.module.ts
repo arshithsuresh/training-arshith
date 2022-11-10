@@ -20,6 +20,10 @@ import { EventInspectorComponent } from './event-inspector/event-inspector.compo
 import { CreateRectComponent } from './side-bar-pallete/collections/create-rect/create-rect.component';
 import { CreateCircleComponent } from './side-bar-pallete/collections/create-circle/create-circle.component';
 import { CreateTriangleComponent } from './side-bar-pallete/collections/create-triangle/create-triangle.component';
+import { CanvasStoreModule } from './state/canvas-store.module';
+import { StoreModule } from '@ngrx/store';
+import { CanvasEventReducer } from './state/canvas/canvas.reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 @NgModule({
@@ -44,7 +48,12 @@ import { CreateTriangleComponent } from './side-bar-pallete/collections/create-t
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatSliderModule
+    MatSliderModule,
+    CanvasStoreModule,
+    StoreModule.forRoot(CanvasEventReducer),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+    }),    
   ],
   providers: [],
   bootstrap: [AppComponent]

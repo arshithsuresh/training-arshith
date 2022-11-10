@@ -1,24 +1,14 @@
-import { IDrawableObject } from "src/app/core/objects/object";
-import { CanvasActions, CANVAS_ACTION_TYPE } from "./canvas.actions";
+import { CanvasActions, CANVAS_ACTION_TYPE } from './canvas.actions';
+import { ICanvasState, initialCanvasState } from './canvas.state';
 
-export interface ICanvasState
-{
-    canvasObjects: Array<IDrawableObject>;
-    canvasStates: [];   
-    canvasEventLog: string[]; 
-}
-
-export function CanvasEventReducer(
-    state: ICanvasState,
-    action: CanvasActions):ICanvasState
-{
-
-    switch(action.type)
-    {
+export function CanvasEventReducer(state: ICanvasState=initialCanvasState, action: CanvasActions): ICanvasState {
+    switch (action.type) {
         case CANVAS_ACTION_TYPE.AddObject:
-                state.canvasObjects.push(action.payload.object)
-            return state;
-        break;            
+            console.log("Here");
+            // state.canvasObjects.push(action.payload.object);
+            let logs = state.canvasEventLog.concat(action.payload.event.getEventMessage());
+            let newState = {...state, canvasEventLog: logs  }            
+            return newState;            
         default:
             return state;
     }

@@ -1,7 +1,7 @@
 import { fabric } from 'fabric';
 import { CANVAS_EVENT_TYPE } from './eventType';
 
-export abstract class CanvasEvent
+export class CanvasEvent
 {    
     
     constructor(private eventType:CANVAS_EVENT_TYPE,
