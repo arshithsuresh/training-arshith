@@ -6,4 +6,5 @@ export interface ICanvasActionPayload{
     // object: fabric.Object,
     // event: CanvasEvent,
     canvasState: string;
+    stateLog: string;
 }

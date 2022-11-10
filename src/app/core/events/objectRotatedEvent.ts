@@ -32,7 +32,8 @@ export class ObjectRotatedEvent extends ICanvasEventHandlers {
         return new ObjectUpdated({
             // event: this.constructEvent(eventData),
             // object: eventData.target!,
-            canvasState: canvasState
+            canvasState: canvasState,
+            stateLog: this.constructEventMessage(eventData)
         });
     }
 }

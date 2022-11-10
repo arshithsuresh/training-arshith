@@ -28,7 +28,8 @@ export class ObjectCreatedEvent extends ICanvasEventHandlers {
         return new AddedObject({
             // event: this.constructEvent(eventData),
             // object: eventData.target!,
-            canvasState: canvasState
+            canvasState: canvasState,
+            stateLog: this.constructEventMessage(eventData)
         });
     }
 }

@@ -45,27 +45,19 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log('Canvas Null!');
         }
     }
-    dispatchAction(event:CanvasEvent, selectedObject:any){
-        
+    dispatchAction(event: CanvasEvent) {
         let _action: Action;
         let _canvasState = JSON.stringify(this.canvas);
-        switch(event.getEventType())
-        {
+        switch (event.getEventType()) {
             case CANVAS_EVENT_TYPE.OBJECT_MODIFIED:
-                _action = new ObjectUpdated(
-                    {
-                        canvasState:_canvasState                   
-                    }
-                );
-            break;
+                _action = new ObjectUpdated({
+                    canvasState: _canvasState,
+                    stateLog: event.getEventMessage(),
+                });
+                break;
 
             default:
-                _action = new ObjectUpdated(
-                    {canvasState:_canvasState,
-                     //event: event,
-                     //object: selectedObject
-                    }
-                );
+                _action = new ObjectUpdated({ canvasState: _canvasState, stateLog: event.getEventMessage() });
         }
 
         this.canvasStore.dispatch(_action);
@@ -82,7 +74,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
                     //     object: e.target!,
                     //     canvasState: JSON.stringify(this.canvas)
                     // }));
-                    this.dispatchAction(canvasEvent, e.target!);
+                    this.dispatchAction(canvasEvent);
                 }
             });
         });

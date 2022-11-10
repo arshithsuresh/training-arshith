@@ -30,7 +30,8 @@ export function CanvasEventReducer(state: ICanvasState = initialCanvasState, act
     }
     // state.canvasStates.concat(JSON.stringify(new fabric.Canvas('canvas')))
     newState = {        
-        canvasStates: state.canvasStates.concat(action.payload.canvasState)
+        canvasStates: state.canvasStates.concat(action.payload.canvasState),
+        stateLogs: state.stateLogs.concat(action.payload.stateLog)
         // canvasEventLog: logs,
     };
     return newState;
