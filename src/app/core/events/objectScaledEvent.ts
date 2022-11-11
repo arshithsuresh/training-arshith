@@ -14,8 +14,7 @@ export class ObjectScaledEvent extends ICanvasEventHandlers {
     constructEventMessage(eventData: fabric.IEvent): string {
         if (eventData.target != undefined && eventData.target.type != undefined) {
             this.eventMessage = `[ Object Scaled ] : ${eventData.target.type} scaled`;
-        }
-        
+        }        
         return this.eventMessage;
     }
 
@@ -28,9 +27,7 @@ export class ObjectScaledEvent extends ICanvasEventHandlers {
     }
 
     constructCanvasAction(eventData: fabric.IEvent, canvasState:string): CanvasActions {
-        return new ObjectUpdated({
-            // event: this.constructEvent(eventData),
-            // object: eventData.target!,
+        return new ObjectUpdated({            
             canvasState: canvasState,
             stateLog: this.constructEventMessage(eventData)
         });

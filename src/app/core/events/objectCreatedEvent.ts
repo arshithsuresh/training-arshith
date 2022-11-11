@@ -6,6 +6,7 @@ import { CANVAS_EVENT_TYPE } from './eventType';
 export class ObjectCreatedEvent extends ICanvasEventHandlers {
     eventName: string = 'object:added';
     eventMessage: string = 'Object Created';
+    eventType:CANVAS_EVENT_TYPE = CANVAS_EVENT_TYPE.OBJECT_CREATED;
 
     constructor() {
         super();
@@ -25,9 +26,7 @@ export class ObjectCreatedEvent extends ICanvasEventHandlers {
     }
 
     constructCanvasAction(eventData: fabric.IEvent, canvasState:string): CanvasActions {
-        return new AddedObject({
-            // event: this.constructEvent(eventData),
-            // object: eventData.target!,
+        return new AddedObject({            
             canvasState: canvasState,
             stateLog: this.constructEventMessage(eventData)
         });

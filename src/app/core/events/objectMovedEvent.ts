@@ -28,9 +28,7 @@ export class ObjectMovedEvent extends ICanvasEventHandlers {
     }
 
     constructCanvasAction(eventData: fabric.IEvent, canvasState:string): CanvasActions {
-        return new ObjectUpdated({
-            // event: this.constructEvent(eventData),
-            // object: eventData.target!,
+        return new ObjectUpdated({            
             canvasState:canvasState,
             stateLog: this.constructEventMessage(eventData)
         });

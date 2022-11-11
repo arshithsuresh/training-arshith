@@ -23,15 +23,11 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     private shapeCreatedSubscription!: Subscription;
 
     constructor(private canvasService: CanvasCoreService, private eventHandlerService: EventHandlerService, private canvasStore: Store) {
+
         this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {
             this.drawObject(object);
+            console.log(`Draw`)            
         });
-
-        // this.canvasStore.dispatch(new AddedObject({
-        //     event: new CanvasEvent(CANVAS_EVENT_TYPE.OBJECT_MODIFIED," "),
-        //     object: new fabric.Rect(),
-        //     canvasState: JSON.stringify(this.canvas)
-        // }));
     }
 
     ngAfterViewInit(): void {
@@ -53,10 +49,9 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
                 _action = new ObjectUpdated({
                     canvasState: _canvasState,
                     stateLog: event.getEventMessage(),
-                });
+                });                
                 break;
-
-            default:
+            default:                
                 _action = new ObjectUpdated({ canvasState: _canvasState, stateLog: event.getEventMessage() });
         }
 
@@ -69,6 +64,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
                     let canvasEvent = event.constructEvent(e);
                     let canvasAction = this.eventHandlerService.handleLogEvent(canvasEvent);
                     event.handleEvent();
+                    console.log(e.target);
                     // this.canvasStore.dispatch(new AddedObject({
                     //     event: canvasEvent,
                     //     object: e.target!,
