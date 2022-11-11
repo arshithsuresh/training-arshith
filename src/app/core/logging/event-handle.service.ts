@@ -1,6 +1,6 @@
 import { Type } from '@angular/compiler';
 import { Injectable} from '@angular/core';
-import { ICanvasEvent } from '../events/canvasEvent';
+import { CanvasEvent, ICanvasEventHandlers } from '../events/canvasEvent';
 import { ObjectCreatedEvent } from '../events/objectCreatedEvent';
 import { ObjectMovedEvent } from '../events/objectMovedEvent';
 import { ObjectRotatedEvent } from '../events/objectRotatedEvent';
@@ -13,7 +13,7 @@ import { EventInspectorLogger } from './eventInspectorLogger';
 
 export class EventHandlerService
 {    
-    registedEvents:ICanvasEvent[]=[];
+    registedEvents:ICanvasEventHandlers[]=[];
     
     constructor(private eventInspectorService:EventInspectorLogger){
         this.registerEvent(new ObjectCreatedEvent());      
@@ -22,11 +22,11 @@ export class EventHandlerService
         this.registerEvent(new ObjectScaledEvent());  
     }
 
-    handleLogEvent(message:string){
-        this.eventInspectorService.eventFired.next(message);
+    handleLogEvent(message:CanvasEvent){
+        this.eventInspectorService.eventFired.next(message.getEventMessage());
     }
 
-    registerEvent(event:ICanvasEvent){
+    registerEvent(event:ICanvasEventHandlers){
         this.registedEvents.push(event);        
     }
 }
