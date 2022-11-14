@@ -1,6 +1,6 @@
-import { ICanvasEvent } from './canvasEvent';
+import { ICanvasEventHandler } from './canvasEvent';
 
-export class ObjectRotatedEvent extends ICanvasEvent {
+export class ObjectRotatedEvent extends ICanvasEventHandler {
     
     eventName: string = 'object:rotated';
     eventMessage: string = 'Object Rotated';

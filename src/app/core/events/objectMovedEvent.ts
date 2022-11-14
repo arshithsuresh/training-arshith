@@ -1,6 +1,6 @@
-import { ICanvasEvent } from './canvasEvent';
+import { ICanvasEventHandler } from './canvasEvent';
 
-export class ObjectMovedEvent extends ICanvasEvent {
+export class ObjectMovedEvent extends ICanvasEventHandler {
     
     eventName: string = 'object:moved';
     eventMessage: string = 'Object Moved';

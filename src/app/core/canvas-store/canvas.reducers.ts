@@ -7,12 +7,12 @@ export const CanvasEventReducer = createReducer(
     on(ObjectModified, (state, payload)=>{
         return {...state, 
             canvasState:payload.canvasState, 
-            selectedObject:payload.objectSelected
+            selectedObject:payload.object
         };
     }),
     on(ObjectCreated, (state, payload)=>{
         return {...state,
-            selectedObject:payload.objectSelected
+            selectedObject:payload.object
         };
     })
 )

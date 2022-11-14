@@ -2,7 +2,7 @@ import { Injectable} from '@angular/core';
 import { fabric } from 'fabric';
 import { Canvas } from 'fabric/fabric-impl';
 import { Subject } from 'rxjs';
-import { ICanvasEvent } from '../events/canvasEvent';
+import { ICanvasEventHandler } from '../events/canvasEvent';
 import { IDrawableObject } from '../objects/object';
 import { Rectangle } from '../objects/rectangle';
 

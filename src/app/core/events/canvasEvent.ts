@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 
-export abstract class ICanvasEvent {
+export abstract class ICanvasEventHandler {
     active: boolean = true;
     abstract eventName: string;
     abstract eventMessage: string;

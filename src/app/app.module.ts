@@ -23,6 +23,7 @@ import { CreateTriangleComponent } from './side-bar-pallete/collections/create-t
 import { Store, StoreModule } from '@ngrx/store';
 import { CanvasEventReducer } from './core/canvas-store/canvas.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { GeneralPropertiesComponent } from './properties/general-properties/general-properties.component';
 
 
 @NgModule({
@@ -37,7 +38,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     PropertiesComponent,
     EventInspectorComponent,
     CreateRectComponent,    
-    CreateCircleComponent, CreateTriangleComponent     
+    CreateCircleComponent, CreateTriangleComponent, GeneralPropertiesComponent     
     
   ],
   imports: [

@@ -4,6 +4,8 @@ import { fabric } from 'fabric';
 import { IDrawableObject } from '../core/objects/object';
 import { Subscription } from 'rxjs';
 import { EventHandlerService } from '../core/logging/event-handle.service';
+import { Action, Store } from '@ngrx/store';
+import { ObjectCreated, ObjectModified } from '../core/canvas-store/canvas.actions';
 
 @Component({
     selector: 'app-canvas',
@@ -16,10 +18,10 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     canvas!: fabric.Canvas;
     private shapeCreatedSubscription!: Subscription;
 
-    constructor(private canvasService: CanvasCoreService, private eventHandlerService: EventHandlerService) {
-        this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {
-            this.drawObject(object);
-        });
+    constructor(private canvasService: CanvasCoreService,
+        private eventHandlerService: EventHandlerService,
+        private canvasStore: Store<CanvasState>) {       
+        
     }
 
     ngAfterViewInit(): void {
@@ -28,21 +30,32 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             this._mCanvas.nativeElement.height = this._mCanvas.nativeElement.offsetHeight;
 
             this.canvas = new fabric.Canvas('canvas');
-            this.initEventHandlers(this.canvas);
+            this.initEventHandlers();
         } else {
             console.log('Canvas Null!');
         }
     }
 
-    initEventHandlers(canvas: fabric.Canvas) {
+    dispatchAction(action:Action){
+        this.canvasStore.dispatch(action);
+    }
+
+    initEventHandlers() {
+        
+        this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {
+            let object_:fabric.Object = object.object.toObject();
+            this.canvas.add(object.object);           
+            this.dispatchAction(
+            ObjectCreated({object: object_}));           
+        });
+        
         this.eventHandlerService.registedEvents.forEach((event) => {
-            canvas.on(event.getEventName(), (e) => {
-                
-                if (event.active) {
-                    let eventMessage = event.getEventMessage(e);
-                    this.eventHandlerService.handleLogEvent(eventMessage);
-                    event.handleEvent();
-                }
+            this.canvas.on(event.getEventName(), (e) => {
+                // if (event.active) {
+                //     let eventMessage = event.getEventMessage(e);
+                //     this.eventHandlerService.handleLogEvent(eventMessage);
+                //     event.handleEvent();
+                // }
             });
         });
     }

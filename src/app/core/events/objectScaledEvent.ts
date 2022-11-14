@@ -1,6 +1,6 @@
-import { ICanvasEvent } from './canvasEvent';
+import { ICanvasEventHandler } from './canvasEvent';
 
-export class ObjectScaledEvent extends ICanvasEvent {
+export class ObjectScaledEvent extends ICanvasEventHandler {
     
     eventName: string = 'object:scaled';
     eventMessage: string = 'Object Scaled';

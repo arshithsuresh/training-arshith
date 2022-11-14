@@ -2,7 +2,8 @@ import { IDrawableObject } from "../objects/object";
 import { fabric } from "fabric";
 
 interface ICanvasState{
-    selectedObject? : IDrawableObject;
+    objects?:[];
+    selectedObject? : fabric.Object;
     canvasState: string;    
 }
 

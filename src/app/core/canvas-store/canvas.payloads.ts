@@ -1,11 +1,11 @@
 import { IDrawableObject } from "../objects/object";
+import { fabric } from "fabric";
 
 export interface IObjectPayload{
-    objectSelected: IDrawableObject;
+    object: fabric.Object;
 }
 
 export interface IObjectModifiedPayload{
-    objectSelected: IDrawableObject;
+    object: fabric.Object;
     canvasState: string;
-
 }
