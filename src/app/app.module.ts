@@ -24,6 +24,8 @@ import { CanvasStoreModule } from './state/canvas-store.module';
 import { StoreModule } from '@ngrx/store';
 import { CanvasEventReducer } from './state/canvas/canvas.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { GeneralPropertiesComponent } from './properties/general-properties/general-properties.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -38,7 +40,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     PropertiesComponent,
     EventInspectorComponent,
     CreateRectComponent,    
-    CreateCircleComponent, CreateTriangleComponent     
+    CreateCircleComponent, CreateTriangleComponent, GeneralPropertiesComponent     
     
   ],
   imports: [
@@ -50,6 +52,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     MatIconModule,
     MatSliderModule,
     CanvasStoreModule,
+    FormsModule,
     StoreModule.forRoot(CanvasEventReducer),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
