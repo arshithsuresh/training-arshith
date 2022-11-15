@@ -5,7 +5,6 @@ export interface IObjectPayload{
     object: fabric.Object;
 }
 
-export interface IObjectModifiedPayload{
-    object: fabric.Object;
+export interface ICanvasModifiedPayload{
     canvasState: string;
 }
