@@ -1,9 +1,12 @@
 import { fabric } from "fabric";
+import { IProperties } from "src/app/properties/properties";
 import { IDrawableObject, IFreeScalable, ILockedScalable, ITwoPointObject } from "./object";
 
-export class Circle implements IDrawableObject, ILockedScalable
+export class Circle extends IDrawableObject implements ILockedScalable
 {
     object: fabric.Circle;
+    properties?:IProperties;
+    
     constructor(        
         public name:string,        
         public width:number,
@@ -11,6 +14,8 @@ export class Circle implements IDrawableObject, ILockedScalable
         public origin:fabric.Point= new fabric.Point(0,0),        
         )
     {
+        super();
+
         this.object = new fabric.Circle(
             {
                 name:name,
