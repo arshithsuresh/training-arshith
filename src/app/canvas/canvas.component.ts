@@ -20,8 +20,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(private canvasService: CanvasCoreService,
         private eventHandlerService: EventHandlerService,
-        private canvasStore: Store<CanvasState>) {       
-        
+        private canvasStore: Store<CanvasState>) {   
     }
 
     ngAfterViewInit(): void {
@@ -31,6 +30,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.canvas = new fabric.Canvas('canvas');
             this.initEventHandlers();
+            this.initSubscribers();
         } else {
             console.log('Canvas Null!');
         }
@@ -41,8 +41,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     initSubscribers(){
-        this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {
-            //let object_:fabric.Object = object.object.toObject();
+        this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {            
             this.canvas.add(object.object);           
             this.dispatchAction(
                 CanvasStateModified({canvasState:JSON.stringify(this.canvas)}));           
@@ -50,14 +49,9 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     initEventHandlers() {
-
         this.eventHandlerService.registedEvents.forEach((event) => {
             this.canvas.on(event.getEventName(), (e) => {
-                // if (event.active) {
-                //     let eventMessage = event.getEventMessage(e);
-                //     this.eventHandlerService.handleLogEvent(eventMessage);
-                //     event.handleEvent();
-                // }
+                
             });
         });
     }

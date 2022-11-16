@@ -9,3 +9,4 @@ export const CanvasStateModified = createAction(
     CANVAS_ACTION_TYPE.CanvasStateModified,
     props<ICanvasModifiedPayload>()    
 )
+

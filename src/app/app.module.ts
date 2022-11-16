@@ -20,10 +20,12 @@ import { EventInspectorComponent } from './event-inspector/event-inspector.compo
 import { CreateRectComponent } from './side-bar-pallete/collections/create-rect/create-rect.component';
 import { CreateCircleComponent } from './side-bar-pallete/collections/create-circle/create-circle.component';
 import { CreateTriangleComponent } from './side-bar-pallete/collections/create-triangle/create-triangle.component';
-import { Store, StoreModule } from '@ngrx/store';
+import { Store, StoreModule, META_REDUCERS } from '@ngrx/store';
 import { CanvasEventReducer } from './core/canvas-store/canvas.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { GeneralPropertiesComponent } from './properties/general-properties/general-properties.component';
+import { metaReducers } from './core/canvas-store/canvas.meta';
+import { CanvasCoreService } from './core/canvas/canvas-core.service';
 
 
 @NgModule({
@@ -49,12 +51,18 @@ import { GeneralPropertiesComponent } from './properties/general-properties/gene
     MatButtonModule,
     MatIconModule,
     MatSliderModule,
-    StoreModule.forRoot({canvasState: CanvasEventReducer}),
+    StoreModule.forRoot({canvasState: CanvasEventReducer},{metaReducers} ),
     StoreDevtoolsModule.instrument({
       maxAge:25
     })
   ],
-  providers: [],
+  providers: [
+    // {
+    //   provide: META_REDUCERS,
+    //   deps:[CanvasCoreService],
+    //   useFactory: metaReducers
+    // }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
