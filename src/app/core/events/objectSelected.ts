@@ -4,6 +4,7 @@ export class ObjectSelectedEvent extends ICanvasEventHandler {
     
     eventName: string = 'selection:updated';
     eventMessage: string = 'Object Selected';
+    hasHistory = false;
 
     constructor() {
         super();
