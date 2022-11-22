@@ -8,7 +8,9 @@ export enum CANVAS_EVENT_TYPE{
     OBJECT_DELETED,
     OBJECT_MODIFIED,
     MOUSE_EVENT,
-    KEYBOARD_EVENT
+    KEYBOARD_EVENT,
+    OBJECT_SELECTED,
+    OBJECT_DESELECTED
 }
 
 export type ObjectModifiedEvents = ObjectMovedEvent | ObjectScaledEvent | ObjectRotatedEvent;

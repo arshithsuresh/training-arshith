@@ -10,6 +10,7 @@ import { AddedObject, ObjectUpdated } from '../state/canvas/canvas.actions';
 import { CanvasEvent, ICanvasEventHandlers } from '../core/events/canvasEvent';
 import { CANVAS_EVENT_TYPE, ObjectModifiedEvents, ObjectCreatedOrRemovedEvent } from '../core/events/eventType';
 import { Action } from '@ngrx/store';
+import { IProperties } from '../properties/properties';
 
 @Component({
     selector: 'app-canvas',
@@ -21,13 +22,24 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
     canvas!: fabric.Canvas;
     private shapeCreatedSubscription!: Subscription;
+    private objectSelectedSubscription!:Subscription;
+    private propertiesChangedSubscription:Subscription;
+    objectSelected?: fabric.Object;
 
-    constructor(private canvasService: CanvasCoreService, private eventHandlerService: EventHandlerService, private canvasStore: Store) {
-
+    constructor(private canvasService: CanvasCoreService,
+        private eventHandlerService: EventHandlerService,
+        private canvasStore: Store,
+        ) {
         this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {
             this.drawObject(object);
-            console.log(`Draw`)            
-        });
+            console.log(`Draw`);
+        });         
+        
+        this.propertiesChangedSubscription = this.canvasService.propertiesChanged$.subscribe((properties)=>{
+            console.log(properties);
+            console.log(this.objectSelected);
+            this.setObjectProperties(properties);
+        })
     }
 
     ngAfterViewInit(): void {
@@ -41,22 +53,52 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log('Canvas Null!');
         }
     }
+    setObjectProperties(properties:IProperties){
+        if(this.objectSelected != undefined)
+        {
+            this.objectSelected.angle = properties.angle;
+            this.objectSelected.strokeWidth = properties.strokeWidth;
+            this.canvas.renderAll();
+        }
+        
+    }   
+
     dispatchAction(event: CanvasEvent) {
         let _action: Action;
         let _canvasState = JSON.stringify(this.canvas);
         switch (event.getEventType()) {
+            case CANVAS_EVENT_TYPE.OBJECT_SELECTED:
+                this.objectSelected = this.canvas.getActiveObject();
+                this.canvasService.objectSelected.next(this.objectSelected);
+                console.log("SELECTED")
+                _action = new ObjectUpdated({
+                    canvasState: _canvasState,
+                    stateLog: event.getEventMessage(),
+                });
+                break;
+            case CANVAS_EVENT_TYPE.OBJECT_DESELECTED:
+                this.objectSelected = undefined;
+                this.canvasService.objectSelected.next(undefined);
+                console.log("UNSELECTED")
+
+                _action = new ObjectUpdated({
+                    canvasState: _canvasState,
+                    stateLog: event.getEventMessage(),
+                });
+                break;
             case CANVAS_EVENT_TYPE.OBJECT_MODIFIED:
                 _action = new ObjectUpdated({
                     canvasState: _canvasState,
                     stateLog: event.getEventMessage(),
-                });                
+                });
                 break;
-            default:                
+            default:
                 _action = new ObjectUpdated({ canvasState: _canvasState, stateLog: event.getEventMessage() });
         }
 
         this.canvasStore.dispatch(_action);
     }
+
     initEventHandlers(canvas: fabric.Canvas) {
         this.eventHandlerService.registedEvents.forEach((event) => {
             canvas.on(event.getEventName(), (e) => {
@@ -64,12 +106,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
                     let canvasEvent = event.constructEvent(e);
                     let canvasAction = this.eventHandlerService.handleLogEvent(canvasEvent);
                     event.handleEvent();
-                    console.log(e.target);
-                    // this.canvasStore.dispatch(new AddedObject({
-                    //     event: canvasEvent,
-                    //     object: e.target!,
-                    //     canvasState: JSON.stringify(this.canvas)
-                    // }));
+                    console.log(e.target);                    
                     this.dispatchAction(canvasEvent);
                 }
             });
@@ -84,5 +121,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.shapeCreatedSubscription.unsubscribe();
+        this.objectSelectedSubscription.unsubscribe();
+        this.propertiesChangedSubscription.unsubscribe();
     }
 }

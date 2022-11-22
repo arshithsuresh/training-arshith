@@ -1,6 +1,7 @@
 import { Type } from '@angular/compiler';
 import { Injectable} from '@angular/core';
 import { CanvasEvent, ICanvasEventHandlers } from '../events/canvasEvent';
+import { MouseDownEvent } from '../events/mouseDownEvent';
 import { ObjectCreatedEvent } from '../events/objectCreatedEvent';
 import { ObjectMovedEvent } from '../events/objectMovedEvent';
 import { ObjectRotatedEvent } from '../events/objectRotatedEvent';
@@ -19,7 +20,8 @@ export class EventHandlerService
         this.registerEvent(new ObjectCreatedEvent());      
         this.registerEvent(new ObjectRotatedEvent());   
         this.registerEvent(new ObjectMovedEvent());
-        this.registerEvent(new ObjectScaledEvent());  
+        this.registerEvent(new ObjectScaledEvent());
+        this.registerEvent(new MouseDownEvent());  
     }
 
     handleLogEvent(message:CanvasEvent){

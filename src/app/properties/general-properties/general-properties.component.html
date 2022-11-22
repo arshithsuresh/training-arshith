@@ -1,0 +1,18 @@
+<div class="object-properties">
+    <div class="property f-col">
+        <label for=""> Stroke Width</label>
+        <mat-slider [step]="0.01" [min]="0" [max]="10" [(ngModel)]="properties.strokeWidth" (change)="emitPropertyChanges()"></mat-slider>
+    </div>
+    <div class="property f-row">
+        <label for=""> Stroke Color</label>
+        <input type="color" [(ngModel)]="properties.strokeColor" (change)="emitPropertyChanges()">
+    </div>
+    <div class="property f-row">
+        <label for=""> Fill Color</label>
+        <input type="color" [(ngModel)]="properties.fillColor" (change)="emitPropertyChanges()">
+    </div>
+    <div class="property f-row">
+        <label for=""> Angle</label>
+        <input type="number" [(ngModel)]="properties.angle" (change)="emitPropertyChanges()">
+    </div>
+</div>
