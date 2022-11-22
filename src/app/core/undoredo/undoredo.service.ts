@@ -42,18 +42,15 @@ export class UndoRedoService {
         this.canRedo.next(false);
     }
     enableRedo(index: number) {
-        this.redoLimit = index;        
+        this.redoLimit = index;
         this.canRedo.next(true);
     }
 
-    initializeUndoRedoState(state: string){
+    initializeUndoRedoState(state: string) {
         this.canvasState[0] = state;
-        console.log('INIT STATE');
-        this.debug();
     }
 
     pushToUndoState(state: string) {
-        
         this.undoIndex = (this.undoIndex + 1) % this.historyCapacity;
         this.canvasState[this.undoIndex] = state;
 
@@ -64,30 +61,22 @@ export class UndoRedoService {
         if (this.undoLimit == -1) {
             this.enableUndo(0);
         }
-        this.disableRedo();
-
-        console.log('PUSH STATE');
-        this.debug();
+        this.disableRedo();        
     }
 
     getUndoState(): string | undefined {
-        
         if (this.redoLimit == -1) {
             this.enableRedo(this.undoIndex);
         }
-        
+
         this.undoIndex = Math.abs((this.undoIndex + this.historyCapacity - 1) % this.historyCapacity);
         let state = this.canvasState[this.undoIndex];
-        this.redoIndex = this.undoIndex;        
+        this.redoIndex = this.undoIndex;
 
         if (this.undoIndex == this.undoLimit) {
             console.log('Undo Limit Reached!');
             this.disableUndo();
         }
-
-        console.log('UNDO STATE');
-        this.debug();
-
         return state;
     }
 
@@ -104,10 +93,6 @@ export class UndoRedoService {
         if (this.redoIndex == this.redoLimit) {
             this.disableRedo();
         }
-
-        console.log('REDO STATE');
-        this.debug();
-
         return state;
     }
 }
