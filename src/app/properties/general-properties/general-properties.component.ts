@@ -32,4 +32,25 @@ export class GeneralPropertiesComponent implements OnInit {
       value: this.currentProperty.strokeWidth
     })
   }
+
+  onStrokeColorChange(){
+    this.propertyChanged.emit({
+      name:'stroke',
+      value: this.currentProperty.strokeColor
+    })
+  }
+
+  onFillColorChange(){
+    this.propertyChanged.emit({
+      name:'fill',
+      value: this.currentProperty.fillColor
+    })
+  }
+
+  onAngleChange(){
+    this.propertyChanged.emit({
+      name:'angle',
+      value: this.currentProperty.angle
+    })
+  }
 }
