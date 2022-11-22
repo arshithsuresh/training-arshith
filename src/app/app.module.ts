@@ -20,13 +20,12 @@ import { EventInspectorComponent } from './event-inspector/event-inspector.compo
 import { CreateRectComponent } from './side-bar-pallete/collections/create-rect/create-rect.component';
 import { CreateCircleComponent } from './side-bar-pallete/collections/create-circle/create-circle.component';
 import { CreateTriangleComponent } from './side-bar-pallete/collections/create-triangle/create-triangle.component';
-import { Store, StoreModule, META_REDUCERS } from '@ngrx/store';
-import { CanvasEventReducer } from './core/canvas-store/canvas.reducers';
+import {  StoreModule, META_REDUCERS } from '@ngrx/store';
+import { CanvasReducers } from './core/canvas-store/canvas.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { GeneralPropertiesComponent } from './properties/general-properties/general-properties.component';
-import { metaReducers } from './core/canvas-store/canvas.meta';
-import { CanvasCoreService } from './core/canvas/canvas-core.service';
-
+import { UndoRedoMetaReducer } from './core/canvas-store/canvas.meta';
+import { UndoRedoService } from './core/undoredo/undoredo.service';
 
 @NgModule({
   declarations: [
@@ -51,17 +50,18 @@ import { CanvasCoreService } from './core/canvas/canvas-core.service';
     MatButtonModule,
     MatIconModule,
     MatSliderModule,
-    StoreModule.forRoot({canvasState: CanvasEventReducer},{metaReducers} ),
+    StoreModule.forRoot(CanvasReducers),
     StoreDevtoolsModule.instrument({
       maxAge:25
     })
   ],
   providers: [
-    // {
-    //   provide: META_REDUCERS,
-    //   deps:[CanvasCoreService],
-    //   useFactory: metaReducers
-    // }
+    {
+      provide: META_REDUCERS,
+      deps:[UndoRedoService],
+      useFactory: UndoRedoMetaReducer,
+      multi:true
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -7,4 +7,5 @@ export interface IObjectPayload{
 
 export interface ICanvasModifiedPayload{
     canvasState: string;
+    applyState: boolean;
 }
