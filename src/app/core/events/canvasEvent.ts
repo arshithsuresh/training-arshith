@@ -4,6 +4,7 @@ export abstract class ICanvasEventHandler {
     active: boolean = true;
     abstract eventName: string;
     abstract eventMessage: string;
+    abstract hasHistory: boolean;
 
     disableEvent(): void {
         this.active = false;

@@ -4,6 +4,7 @@ export class ObjectRotatedEvent extends ICanvasEventHandler {
     
     eventName: string = 'object:rotated';
     eventMessage: string = 'Object Rotated';
+    hasHistory = true;
 
     constructor() {
         super();

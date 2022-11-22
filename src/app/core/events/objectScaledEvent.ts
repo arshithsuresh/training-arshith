@@ -4,6 +4,7 @@ export class ObjectScaledEvent extends ICanvasEventHandler {
     
     eventName: string = 'object:scaled';
     eventMessage: string = 'Object Scaled';
+    hasHistory = true;
 
     constructor() {
         super();

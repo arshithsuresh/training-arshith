@@ -4,6 +4,7 @@ export class ObjectMovedEvent extends ICanvasEventHandler {
     
     eventName: string = 'object:moved';
     eventMessage: string = 'Object Moved';
+    hasHistory = true;
 
     constructor() {
         super();

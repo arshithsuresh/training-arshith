@@ -4,8 +4,9 @@ import { fabric } from 'fabric';
 import { IDrawableObject } from '../core/objects/object';
 import { Subscription } from 'rxjs';
 import { EventHandlerService } from '../core/logging/event-handle.service';
-import { Action, Store } from '@ngrx/store';
-import { CanvasStateModified } from '../core/canvas-store/canvas.actions';
+import { Action, select, Store } from '@ngrx/store';
+import { CanvasStateModifiedAction } from '../core/canvas-store/canvas.actions';
+import { canvasStateSelector } from '../core/canvas-store/canvas.selectors';
 
 @Component({
     selector: 'app-canvas',
@@ -17,11 +18,24 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
     canvas!: fabric.Canvas;
     private shapeCreatedSubscription!: Subscription;
+    canvasStateSelector$ = this.canvasStore.pipe(select(canvasStateSelector));
 
-    constructor(private canvasService: CanvasCoreService,
+    constructor(
+        private canvasService: CanvasCoreService,
         private eventHandlerService: EventHandlerService,
-        private canvasStore: Store<CanvasState>) {   
-    }
+        private canvasStore: Store<CanvasState>
+    ) {
+        this.canvasStateSelector$.subscribe((state) => {
+            console.log(state);
+            if (state.applyState == true) {
+                this.canvas.off();
+                this.canvas.loadFromJSON(state.canvasState, () => {
+                    this.canvas.renderAll(); 
+                    this.initEventHandlers();                    
+                });
+            }
+        });
+    }    
 
     ngAfterViewInit(): void {
         if (this._mCanvas != null) {
@@ -36,22 +50,25 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    dispatchAction(action:Action){
+    dispatchAction(action: Action) {
         this.canvasStore.dispatch(action);
     }
 
-    initSubscribers(){
-        this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {            
-            this.canvas.add(object.object);           
-            this.dispatchAction(
-                CanvasStateModified({canvasState:JSON.stringify(this.canvas)}));           
+    initSubscribers() {
+        this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {
+            this.canvas.add(object.object);
+            // this.dispatchAction(new CanvasStateModifiedAction({ canvasState: JSON.stringify(this.canvas), applyState: false }));
         });
     }
 
     initEventHandlers() {
         this.eventHandlerService.registedEvents.forEach((event) => {
             this.canvas.on(event.getEventName(), (e) => {
-                
+                if(event.hasHistory)
+                {
+                    console.log("EVENT :: ", event.getEventName())
+                    this.dispatchAction(new CanvasStateModifiedAction({ canvasState: JSON.stringify(this.canvas), applyState: false }));
+                }
             });
         });
     }

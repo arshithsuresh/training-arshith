@@ -4,6 +4,7 @@ export class ObjectCreatedEvent extends ICanvasEventHandler {
     
     eventName: string = 'object:added';
     eventMessage: string = 'Object Created';
+    hasHistory = true;
 
     constructor() {
         super();
