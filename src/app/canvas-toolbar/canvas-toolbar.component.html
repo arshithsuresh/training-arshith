@@ -1,8 +1,8 @@
 <div>
-    <button mat-mini-fab color="primary" >
+    <button [disabled]="!canUndo" mat-mini-fab color="primary" (click)="onUndoClick()" >
         <mat-icon>undo</mat-icon>
     </button>
-    <button mat-mini-fab color="primary" >
+    <button [disabled]="!canRedo" mat-mini-fab color="primary"  (click)="onRedoClick()" >
         <mat-icon>redo</mat-icon>
     </button>
 </div>
