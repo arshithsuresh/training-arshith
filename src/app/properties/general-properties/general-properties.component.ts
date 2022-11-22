@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { IObjectProperty } from 'src/app/core/properties/properties';
+import { IProperties } from '../properties';
 
 @Component({
   selector: 'app-general-properties',
@@ -7,9 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GeneralPropertiesComponent implements OnInit {
 
-  constructor() { }
+  @Input('properties') currentProperty!:IProperties;
+  @Output('onPropChanged') propertyChanged:EventEmitter<IObjectProperty> = new EventEmitter();
 
-  ngOnInit(): void {
+  debugInit(){
+    this.currentProperty={
+      fillColor:"FFFFFF",
+      angle:0,
+      strokeColor:"FFFFFF",
+      strokeWidth:0
+    };
   }
+  constructor() {
+    this.debugInit();
+  }
+  ngOnInit(): void {
+  }  
 
+  onStrokeWidthChange(){
+    this.propertyChanged.emit({
+      name:'strokeWidth',
+      value: this.currentProperty.strokeWidth
+    })
+  }
 }

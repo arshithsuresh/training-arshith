@@ -26,6 +26,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { GeneralPropertiesComponent } from './properties/general-properties/general-properties.component';
 import { UndoRedoMetaReducer } from './core/canvas-store/canvas.meta';
 import { UndoRedoService } from './core/undoredo/undoredo.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { UndoRedoService } from './core/undoredo/undoredo.service';
     MatButtonModule,
     MatIconModule,
     MatSliderModule,
+    FormsModule,
     StoreModule.forRoot(CanvasReducers),
     StoreDevtoolsModule.instrument({
       maxAge:25
