@@ -109,10 +109,17 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         this.eventHandlerService.registedEvents.forEach((event) => {
             this.canvas.on(event.getEventName(), (e) => {
                 
+                let eventMessage = event.getEventMessage(e);
+                let eventName = event.getEventName();
                 if (event.active) {
-                    let eventMessage = event.getEventMessage(e);
-                    this.eventHandlerService.handleLogEvent(eventMessage);
-                    event.handleEvent();
+                    if (event.loggable) this.eventHandlerService.handleLogEvent(eventMessage);
+                    let canvasEvent = event.constructEvent(e);
+                    this.handleEvent(canvasEvent);
+                }
+                console.log("Object Event");
+                if (event.hasHistory) {
+                    console.log('EVENT :: ', eventName);
+                    //this.dispatchAction(new CanvasStateModifiedAction({ canvasState: JSON.stringify(this.canvas), applyState: false }));
                 }
             });
         });

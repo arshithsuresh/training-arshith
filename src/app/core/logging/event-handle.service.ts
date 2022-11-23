@@ -28,8 +28,8 @@ export class EventHandlerService
         //this.registerEvent(new ObjectSelectedEvent());
     }
 
-    handleLogEvent(message:CanvasEvent){
-        this.eventInspectorService.eventFired.next(message.getEventMessage());
+    handleLogEvent(message:string){
+        this.eventInspectorService.eventFired.next(message);
     }
 
     registerEvent(event:ICanvasEventHandler){
