@@ -40,7 +40,7 @@ import { FormsModule } from '@angular/forms';
     PropertiesComponent,
     EventInspectorComponent,
     CreateRectComponent,    
-    CreateCircleComponent, CreateTriangleComponent, GeneralPropertiesComponent     
+    CreateCircleComponent, CreateTriangleComponent, GeneralPropertiesComponent, GeneralPropertiesComponent     
     
   ],
   imports: [

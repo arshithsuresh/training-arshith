@@ -1,10 +1,10 @@
 import { Injectable} from '@angular/core';
-import { fabric } from 'fabric';
-import { Canvas } from 'fabric/fabric-impl';
 import { Subject } from 'rxjs';
 import { ICanvasEventHandler } from '../events/canvasEvent';
 import { IDrawableObject } from '../objects/object';
 import { Rectangle } from '../objects/rectangle';
+import { fabric } from 'fabric';
+import { IProperties } from 'src/app/properties/properties';
 
 
 
@@ -16,6 +16,12 @@ export class CanvasCoreService {
   objects:Map<string,IDrawableObject>= new Map();
   currentSelectedObject?:string;
   
+  objectSelected: Subject<fabric.Object> = new Subject();
+  objectSelected$ = this.objectSelected.asObservable();
+
+  propertiesChanged: Subject<IProperties> = new Subject();
+  propertiesChanged$ = this.propertiesChanged.asObservable();
+
   shapeCreated : Subject<IDrawableObject> = new Subject();
   shapeCreated$ = this.shapeCreated.asObservable();
 
@@ -64,6 +70,5 @@ export class CanvasCoreService {
     this.objects.set(objectName,shape);
     this.shapeCreated.next(shape)
   }
-
-
+  
 }

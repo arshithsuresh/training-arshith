@@ -52,13 +52,12 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log('Canvas Null!');
         }
     }
-
+    
     dispatchAction(hasHistory:boolean, action:Action) {
         if(hasHistory){
             this.canvasStore.dispatch(action);
         }
     }
-
     handleEvent(event: CanvasEvent) {
         let action = new CanvasStateModifiedAction({ canvasState: JSON.stringify(this.canvas), applyState: false });
 
@@ -109,17 +108,11 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     initEventHandlers() {
         this.eventHandlerService.registedEvents.forEach((event) => {
             this.canvas.on(event.getEventName(), (e) => {
-                let eventMessage = event.getEventMessage(e);
-                let eventName = event.getEventName();
+                
                 if (event.active) {
-                    if (event.loggable) this.eventHandlerService.handleLogEvent(eventMessage);
-                    let canvasEvent = event.constructEvent(e);
-                    this.handleEvent(canvasEvent);
-                }
-                console.log("Object Event");
-                if (event.hasHistory) {
-                    console.log('EVENT :: ', eventName);
-                    //this.dispatchAction(new CanvasStateModifiedAction({ canvasState: JSON.stringify(this.canvas), applyState: false }));
+                    let eventMessage = event.getEventMessage(e);
+                    this.eventHandlerService.handleLogEvent(eventMessage);
+                    event.handleEvent();
                 }
             });
         });
@@ -132,6 +125,6 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.shapeCreatedSubscription.unsubscribe();
+        this.shapeCreatedSubscription.unsubscribe();        
     }
 }

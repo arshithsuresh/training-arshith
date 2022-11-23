@@ -38,3 +38,4 @@ export abstract class ICanvasEventHandler {
     abstract getEventMessage(eventData: fabric.IEvent): string;
     abstract constructEvent(eventData: fabric.IEvent):CanvasEvent;
 }
+
