@@ -4,13 +4,12 @@ import { fabric } from 'fabric';
 import { IDrawableObject } from '../core/objects/object';
 import { Subscription } from 'rxjs';
 import { EventHandlerService } from '../core/logging/event-handle.service';
-import { Store } from '@ngrx/store';
-import { CanvasStoreModule } from '../state/canvas-store.module';
-import { AddedObject, ObjectUpdated } from '../state/canvas/canvas.actions';
-import { CanvasEvent, ICanvasEventHandlers } from '../core/events/canvasEvent';
-import { CANVAS_EVENT_TYPE, ObjectModifiedEvents, ObjectCreatedOrRemovedEvent } from '../core/events/eventType';
-import { Action } from '@ngrx/store';
-import { IProperties } from '../properties/properties';
+import { Action, select, Store } from '@ngrx/store';
+import { CanvasStateModifiedAction } from '../core/canvas-store/canvas.actions';
+import { canvasStateSelector } from '../core/canvas-store/canvas.selectors';
+import { CanvasEvent } from '../core/events/canvasEvent';
+import { CANVAS_EVENT_TYPE } from '../core/events/eventType';
+import { PropertiesPanelServiceService } from '../properties/properties-panel-service.service';
 
 @Component({
     selector: 'app-canvas',
@@ -22,92 +21,105 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
     canvas!: fabric.Canvas;
     private shapeCreatedSubscription!: Subscription;
-    private objectSelectedSubscription!:Subscription;
-    private propertiesChangedSubscription:Subscription;
-    objectSelected?: fabric.Object;
+    canvasStateSelector$ = this.canvasStore.pipe(select(canvasStateSelector));
 
-    constructor(private canvasService: CanvasCoreService,
+    constructor(
+        private canvasService: CanvasCoreService,
         private eventHandlerService: EventHandlerService,
-        private canvasStore: Store,
-        ) {
-        this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {
-            this.drawObject(object);
-            console.log(`Draw`);
-        });         
-        
-        this.propertiesChangedSubscription = this.canvasService.propertiesChanged$.subscribe((properties)=>{
-            console.log(properties);
-            console.log(this.objectSelected);
-            this.setObjectProperties(properties);
-        })
+        private canvasStore: Store<CanvasState>,
+        private propertyPanelService : PropertiesPanelServiceService
+    ) {
+        this.canvasStateSelector$.subscribe((state) => {
+            console.log(state);
+            if (state.applyState == true) {
+                this.canvas.off();
+                this.canvas.loadFromJSON(state.canvasState, () => {
+                    this.canvas.renderAll();
+                    this.initEventHandlers();
+                });
+            }
+        });
     }
 
     ngAfterViewInit(): void {
         if (this._mCanvas != null) {
             this._mCanvas.nativeElement.width = this._mCanvas.nativeElement.offsetWidth;
             this._mCanvas.nativeElement.height = this._mCanvas.nativeElement.offsetHeight;
-
             this.canvas = new fabric.Canvas('canvas');
-            this.initEventHandlers(this.canvas);
+            this.initEventHandlers();
+            this.initSubscribers();
         } else {
             console.log('Canvas Null!');
         }
     }
-    setObjectProperties(properties:IProperties){
-        if(this.objectSelected != undefined)
-        {
-            this.objectSelected.angle = properties.angle;
-            this.objectSelected.strokeWidth = properties.strokeWidth;
-            this.canvas.renderAll();
+    
+    dispatchAction(hasHistory:boolean, action:Action) {
+        if(hasHistory){
+            this.canvasStore.dispatch(action);
         }
-        
-    }   
+    }
+    handleEvent(event: CanvasEvent) {
+        let action = new CanvasStateModifiedAction({ canvasState: JSON.stringify(this.canvas), applyState: false });
 
-    dispatchAction(event: CanvasEvent) {
-        let _action: Action;
-        let _canvasState = JSON.stringify(this.canvas);
         switch (event.getEventType()) {
+            case CANVAS_EVENT_TYPE.OBJECT_CREATED:     
+                this.dispatchAction(event.hasHistory, action)           
+                break;
             case CANVAS_EVENT_TYPE.OBJECT_SELECTED:
-                this.objectSelected = this.canvas.getActiveObject();
-                this.canvasService.objectSelected.next(this.objectSelected);
-                console.log("SELECTED")
-                _action = new ObjectUpdated({
-                    canvasState: _canvasState,
-                    stateLog: event.getEventMessage(),
-                });
+                if (this.canvas.getActiveObjects().length == 1) {
+                    console.log('Object Selected');
+                    this.canvasService.canvasObjectSelected.next(this.canvas.getActiveObject());
+                } else {
+                    console.log('Multiple Object Selected');
+                    this.canvasService.canvasObjectSelected.next(undefined);
+                }
                 break;
             case CANVAS_EVENT_TYPE.OBJECT_DESELECTED:
-                this.objectSelected = undefined;
-                this.canvasService.objectSelected.next(undefined);
-                console.log("UNSELECTED")
-
-                _action = new ObjectUpdated({
-                    canvasState: _canvasState,
-                    stateLog: event.getEventMessage(),
-                });
-                break;
-            case CANVAS_EVENT_TYPE.OBJECT_MODIFIED:
-                _action = new ObjectUpdated({
-                    canvasState: _canvasState,
-                    stateLog: event.getEventMessage(),
-                });
-                break;
-            default:
-                _action = new ObjectUpdated({ canvasState: _canvasState, stateLog: event.getEventMessage() });
+                if (this.canvas.getActiveObjects().length == 0) {
+                    console.log('Object de selected');
+                    this.canvasService.canvasObjectSelected.next(undefined);
+                }
+            break;
+            case CANVAS_EVENT_TYPE.OBJECT_MODIFIED:                
+                this.dispatchAction(event.hasHistory, action)
+                console.log("Object Modified")
+            break;
+            case CANVAS_EVENT_TYPE.OBJECT_TRANSFORM_MODIFIED:                
+            break;
         }
 
-        this.canvasStore.dispatch(_action);
+        
     }
 
-    initEventHandlers(canvas: fabric.Canvas) {
+    initSubscribers() {
+        this.shapeCreatedSubscription = this.canvasService.shapeCreated.subscribe((object) => {
+            this.canvas.add(object.object);
+            // this.dispatchAction(new CanvasStateModifiedAction({ canvasState: JSON.stringify(this.canvas), applyState: false }));
+        });
+
+        this.propertyPanelService.objectPropertiesChanged$.subscribe((property)=>{
+            this.canvas.getActiveObject()._set(property.name, property.value)
+            this.canvas.renderAll();
+            let action = new CanvasStateModifiedAction({ canvasState: JSON.stringify(this.canvas), applyState: false });
+            this.dispatchAction(true, action);
+        })
+    }
+
+    initEventHandlers() {
         this.eventHandlerService.registedEvents.forEach((event) => {
-            canvas.on(event.getEventName(), (e) => {
+            this.canvas.on(event.getEventName(), (e) => {
+                
+                let eventMessage = event.getEventMessage(e);
+                let eventName = event.getEventName();
                 if (event.active) {
+                    if (event.loggable) this.eventHandlerService.handleLogEvent(eventMessage);
                     let canvasEvent = event.constructEvent(e);
-                    let canvasAction = this.eventHandlerService.handleLogEvent(canvasEvent);
-                    event.handleEvent();
-                    console.log(e.target);                    
-                    this.dispatchAction(canvasEvent);
+                    this.handleEvent(canvasEvent);
+                }
+                console.log("Object Event");
+                if (event.hasHistory) {
+                    console.log('EVENT :: ', eventName);
+                    //this.dispatchAction(new CanvasStateModifiedAction({ canvasState: JSON.stringify(this.canvas), applyState: false }));
                 }
             });
         });
@@ -120,8 +132,6 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.shapeCreatedSubscription.unsubscribe();
-        this.objectSelectedSubscription.unsubscribe();
-        this.propertiesChangedSubscription.unsubscribe();
+        this.shapeCreatedSubscription.unsubscribe();        
     }
 }

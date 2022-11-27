@@ -20,13 +20,13 @@ import { EventInspectorComponent } from './event-inspector/event-inspector.compo
 import { CreateRectComponent } from './side-bar-pallete/collections/create-rect/create-rect.component';
 import { CreateCircleComponent } from './side-bar-pallete/collections/create-circle/create-circle.component';
 import { CreateTriangleComponent } from './side-bar-pallete/collections/create-triangle/create-triangle.component';
-import { CanvasStoreModule } from './state/canvas-store.module';
-import { StoreModule } from '@ngrx/store';
-import { CanvasEventReducer } from './state/canvas/canvas.reducers';
+import {  StoreModule, META_REDUCERS } from '@ngrx/store';
+import { CanvasReducers } from './core/canvas-store/canvas.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { GeneralPropertiesComponent } from './properties/general-properties/general-properties.component';
+import { UndoRedoMetaReducer } from './core/canvas-store/canvas.meta';
+import { UndoRedoService } from './core/undoredo/undoredo.service';
 import { FormsModule } from '@angular/forms';
-
 
 @NgModule({
   declarations: [
@@ -40,7 +40,7 @@ import { FormsModule } from '@angular/forms';
     PropertiesComponent,
     EventInspectorComponent,
     CreateRectComponent,    
-    CreateCircleComponent, CreateTriangleComponent, GeneralPropertiesComponent     
+    CreateCircleComponent, CreateTriangleComponent, GeneralPropertiesComponent, GeneralPropertiesComponent     
     
   ],
   imports: [
@@ -51,14 +51,20 @@ import { FormsModule } from '@angular/forms';
     MatButtonModule,
     MatIconModule,
     MatSliderModule,
-    CanvasStoreModule,
     FormsModule,
-    StoreModule.forRoot(CanvasEventReducer),
+    StoreModule.forRoot(CanvasReducers),
     StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-    }),    
+      maxAge:25
+    })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: META_REDUCERS,
+      deps:[UndoRedoService],
+      useFactory: UndoRedoMetaReducer,
+      multi:true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

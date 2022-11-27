@@ -1,7 +1,13 @@
 <div class="properties pd-12">
     <div class="panel-heading">
         <p>Properties Panel</p>
+        <app-general-properties
+            *ngIf="panelVisible"
+            [properties]="objectSelectedProperties"
+            (onPropChanged)="onPropertyChanged($event)"
+        ></app-general-properties>
     </div>
-    <app-general-properties *ngIf="hasObjectSelected" [properties]="properties"
-    (onPropChanged)="onPropertiesChanged($event)"></app-general-properties>
-</div>    
+    <div class="error-panel">
+        <p *ngIf="!panelVisible">Select an object!</p>
+    </div>
+</div>

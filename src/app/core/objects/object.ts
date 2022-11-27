@@ -1,10 +1,28 @@
 
 import { fabric } from "fabric";
+import { IProperties } from "src/app/properties/properties";
 
-export interface IDrawableObject{
-    object:fabric.Object;
-    name:string;      
-    origin:fabric.Point;   
+export abstract class IDrawableObject{
+    abstract object:fabric.Object;
+    abstract name:string;      
+    abstract origin:fabric.Point;
+    abstract properties?:IProperties;
+
+    setStrokeWidth(width:number){
+        this.object.strokeWidth = width;
+    }
+
+    setFillColor(color:string){
+        this.object.set("fill",color)
+    }
+
+    setAngle(angle:number){
+        this.object.set("angle", angle)
+    }
+
+    setStrokeColor(color:string){
+        this.object.set("stroke", color)
+    }
 }
 
 export interface IFreeScalable{

@@ -1,39 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { CanvasCoreService } from '../core/canvas/canvas-core.service';
+import { IObjectProperty } from '../core/properties/properties';
 import { IProperties } from './properties';
+import { PropertiesPanelServiceService } from './properties-panel-service.service';
 
 @Component({
-  selector: 'app-properties',
-  templateUrl: './properties.component.html',
-  styleUrls: ['./properties.component.scss']
+    selector: 'app-properties',
+    templateUrl: './properties.component.html',
+    styleUrls: ['./properties.component.scss'],
 })
-export class PropertiesComponent implements OnInit {
+export class PropertiesComponent implements OnInit, OnDestroy {
+    panelVisible = false;
+    panelVisibleSubscription: Subscription;
 
-  hasObjectSelected:boolean = false;
-  objectSelectedSubscription: Subscription;
+    objectSelectedProperties: IProperties = {
+        fillColor: 'FFFFFF',
+        angle: 0,
+        strokeColor: 'FFFFFF',
+        strokeWidth: 0,
+    };
 
-  properties!:IProperties;
+    constructor(private propertyPanelHandler: PropertiesPanelServiceService) {
+        this.panelVisibleSubscription = this.propertyPanelHandler.porpertyPanelVisibleState$.subscribe((val) => {
+            this.panelVisible = val;
+        });
 
-  constructor(private canvasService : CanvasCoreService) {
-    this.objectSelectedSubscription = canvasService.objectSelected$.subscribe((object)=>{
-      if(object)
-      {
-        this.hasObjectSelected = true;
-        this.properties = canvasService.getObjectProperties(object);
-      }
-      else
-      {
-        this.hasObjectSelected = false;
-      }
-    })  
-  }
+        this.propertyPanelHandler.objectProperties$.subscribe((val) => {
+            this.objectSelectedProperties = val;
+        });
+    }
+    ngOnInit(): void {}
+    ngOnDestroy(): void {}
 
-  ngOnInit(): void {
-  }
-
-  onPropertiesChanged(properties:IProperties){
-   this.canvasService.propertiesChanged.next(properties);
-  }
-
+    onPropertyChanged(property:IObjectProperty)
+    {
+      this.propertyPanelHandler.objectPropertiesChanged.next(property);
+    }
 }

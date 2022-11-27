@@ -1,11 +1,10 @@
 import { fabric } from 'fabric';
-import { CanvasActions } from 'src/app/state/canvas/canvas.actions';
 import { CANVAS_EVENT_TYPE } from './eventType';
 
 export class CanvasEvent
-{   
+{       
     constructor(private eventType:CANVAS_EVENT_TYPE,
-        private message:string){}
+        private message:string, public hasHistory=true){}
 
     getEventMessage(){
         return this.message;
@@ -15,10 +14,12 @@ export class CanvasEvent
         return this.eventType;
     }
 }
-export abstract class ICanvasEventHandlers {
+export abstract class ICanvasEventHandler {
     active: boolean = true;
     abstract eventName: string;
     abstract eventMessage: string;
+    abstract hasHistory: boolean;
+    abstract loggable:boolean;
 
     disableEvent(): void {
         this.active = false;
@@ -34,8 +35,7 @@ export abstract class ICanvasEventHandlers {
         console.log("EVENT :: " + this.eventName);
     }
 
-    abstract constructEventMessage(eventData: fabric.IEvent): string;
+    abstract getEventMessage(eventData: fabric.IEvent): string;
     abstract constructEvent(eventData: fabric.IEvent):CanvasEvent;
-    abstract constructCanvasAction(eventData: fabric.IEvent, canvasState:string): CanvasActions;
 }
 
